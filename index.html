@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body{
+        background-color: rgb(218, 189, 243);
+        }
+    .container{
+        background-color: white;
+        display: block;
+        border-radius:5px;
+        max-width:100%;
+        margin:0em 3em;
+    }
+    table{
+        margin-left: auto;
+        margin-right: auto;
+        width:500px;
+    }
+    .thead-item{
+        font-weight: 900;
+        font-size:18px;
+    }
+    h2{
+        font-family:'Times New Roman', Times, serif;
+        text-transform: uppercase;
+        padding-top: 3em;
+    }
+   form, .butoane{
+        margin-left: auto;
+        margin-right: auto;
+        width:500px;       
+    }
+    input{
+        display: inline;
+        margin-right:5px;
+    }
+    input[type="text"]{
+         padding:0.8em; width:60%;  
+         border:1px solid rgb(170, 170, 170);
+                        }
+    .btn { 
+        border-radius: 5px; 
+        box-shadow: 1px 1px 3px #b5b5b5;
+        font-family: Georgia;
+        color: #000000;
+        font-size: 14px;
+        background: #8de96f;
+        padding: 9px;
+        border: solid #c2c2c2 2px;
+        text-decoration: none;
+        }
+    .btn:hover{
+        background: #c1f3b0;
+            }
+    .sort{
+        border-radius: 5px; 
+        box-shadow: 1px 1px 3px #b5b5b5;
+        font-family: Georgia;
+        color: #000000;
+        font-size: 14px;
+        background: #e06fe4;
+        border: solid #c2c2c2 2px;
+        text-decoration: none;
+    }
+    .mark{
+        border-radius: 5px; 
+        box-shadow: 1px 1px 3px #b5b5b5;
+        font-family: Georgia;
+        color: #000000;
+        font-size: 14px;
+        background: #ee278b;
+        border: solid #c2c2c2 2px;
+        text-decoration: none;
+    }
+    .marked {
+        text-decoration: line-through;
+        }
+</style>
+<script>
+    var listaProduse = [];
+    var Imark = [];
+
+		function sort_asc(){
+             listaProduse.sort(function(a,b){
+                var x = a.toLowerCase();
+                var y = b.toLowerCase();
+                if (x > y) {return 1;}
+                return 0;
+            });
+			      drawLista();
+        }
+
+     function sort_desc(){
+              listaProduse.sort(function(a,b){
+                var x = a.toLowerCase();
+                var y = b.toLowerCase();
+                if (x < y) {return 1;}
+                return 0;
+            });
+			       drawLista();
+        }
+
+     function mark(){
+         ind_mark[listaProduse] = "marked";
+     }
+     function adaugaProduse(form, event) {
+            event.preventDefault();
+            var elemNume = document.querySelector("#nume").value;
+            listaProduse.push(elemNume);
+            document.querySelector("#nume").value = "";
+            drawLista();
+        }
+ 
+     function drawLista() {
+            var tabel = document.querySelector("#listaProduse tbody");
+            var str = "";
+            var str= `<thead>
+                            <tr>
+                                <td class="thead-item">Item description</td>
+                                <td class="thead-item">Action</td>
+                            </tr>
+                        </thead>
+            `;
+            for (var i = 0; i < listaProduse.length; i++) {
+                var rand = `<tr class = ${Imark[listaProduse[i]]}>
+                                <td>${listaProduse[i]}</td>
+                                <td><button class="mark" onclick="mark('${listaProduse[i]}')">Mark as buyed</button></td>
+                            </tr>`;
+                 str += rand;
+            }
+           // console.log(str);
+            tabel.innerHTML = str;
+        }
+        
+        var first_click=true;
+        function mark(listaProduse){
+            if(first_click) {
+                            Imark[listaProduse] = "marked";
+                            first_click = false;
+            }else{
+                Imark[listaProduse] = "";  
+                first_click = true;
+                }
+            drawLista();
+        }
+</script>
+</head>
+
+<body>
+    <div class="container">
+        <form action="" onsubmit="adaugaProduse(this,event);">
+            <h2>Shopping List</h2><br/>
+            <input name="nume" id="nume" type="text">
+            <input type="submit" class="btn" value="Add item" />
+        </form>
+        <br/><br/>
+        <div class="butoane">
+            <button class="sort" onclick="sort_asc()">Sort asc</button> 
+            <button class="sort" onclick="sort_desc()">Sort desc</button>
+            <br/><br/><br/>
+        </div>
+    <table id="listaProduse">
+		<tbody></tbody>
+    </table>
+    <br /><br/>
+</div>
+</body>
+
+</html>
